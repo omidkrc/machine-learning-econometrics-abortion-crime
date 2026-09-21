@@ -19,4 +19,4 @@ The full supplied terms are retained verbatim in `LICENSE_REPLICATION_MATERIALS.
 
 ## Repository-specific work
 
-`code/abortion_crime_double_selection.do` is a portability-focused adaptation of the course replication implementation and the upstream replication logic. The course report in `report/course_report.pdf`, the README, and repository-specific documentation are Omid Karami's course/project materials. Nothing in this repository is intended to remove or replace the attribution and license obligations attached to the upstream materials.
+`code/abortion_crime_double_selection.do` is a portability-focused adaptation of the course replication implementation and the upstream replication logic. The GitHub-readable course report in `report/course_report.md`, the README, and repository-specific documentation are Omid Karami's course/project materials. Nothing in this repository is intended to remove or replace the attribution and license obligations attached to the upstream materials.
