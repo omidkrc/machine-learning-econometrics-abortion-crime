@@ -1,0 +1,972 @@
+Sanitized copy of the successful Stata course run. Local filesystem paths were removed; statistical output and commands are otherwise preserved.
+
+. cd "<local-project-path>"
+<local-project-path>
+
+. *replacing the your directory in this path
+. 
+. *******************************************************
+. * 1. Load data
+. *******************************************************
+. 
+end of do-file
+
+. do "<local-project-path>"
+
+. insheet using "levitt_ex.dat", clear
+(17 vars, 1,734 obs)
+
+. 
+end of do-file
+
+. do "<local-project-path>"
+
+. * The uploaded log shows that it reads 17 variables and 1,734 observations.
+. 
+. *******************************************************
+. * 2. Sample restrictions
+. *******************************************************
+. 
+. * Drop Washington, DC.
+. drop if statenum == 9
+(34 observations deleted)
+
+. 
+. * Keep the years used in the replication: 1985-1997.
+. drop if year < 85 | year > 97
+(1,050 observations deleted)
+
+. 
+. * Normalized trend variable.
+. gen trend = (year - 85) / 12
+
+. 
+. * Declare panel structure.
+. tsset statenum year
+
+Panel variable: statenum (strongly balanced)
+ Time variable: year, 85 to 97
+         Delta: 1 unit
+
+. 
+end of do-file
+
+. do "<local-project-path>"
+
+. *******************************************************
+. * 3. Baseline first-difference regressions
+. *******************************************************
+. 
+. xi: reg D.lpc_viol D.efaviol D.xx* i.year, cluster(statenum)
+i.year            _Iyear_85-97        (naturally coded; _Iyear_85 omitted)
+note: _Iyear_97 omitted because of collinearity.
+
+Linear regression                               Number of obs     =        600
+                                                F(20, 49)         =      23.68
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.2654
+                                                Root MSE          =     .07152
+
+                              (Std. err. adjusted for 50 clusters in statenum)
+------------------------------------------------------------------------------
+             |               Robust
+  D.lpc_viol | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+     efaviol |
+         D1. |  -.1567411   .0339323    -4.62   0.000    -.2249305   -.0885516
+             |
+    xxprison |
+         D1. |  -.0371389    .057169    -0.65   0.519    -.1520242    .0777465
+             |
+    xxpolice |
+         D1. |  -.0042249   .0444837    -0.09   0.925    -.0936182    .0851684
+             |
+     xxunemp |
+         D1. |  -.4114647   .5430637    -0.76   0.452    -1.502792    .6798626
+             |
+    xxincome |
+         D1. |   .2568899   .2044154     1.26   0.215    -.1538982     .667678
+             |
+     xxpover |
+         D1. |   .0016302   .0016433     0.99   0.326    -.0016721    .0049324
+             |
+    xxafdc15 |
+         D1. |   2.89e-06   5.77e-06     0.50   0.619    -8.71e-06    .0000145
+             |
+    xxgunlaw |
+         D1. |  -.0169179    .013582    -1.25   0.219    -.0442119    .0103761
+             |
+      xxbeer |
+         D1. |  -.0000668   .0014536    -0.05   0.964    -.0029879    .0028543
+             |
+   _Iyear_86 |   .0472137   .0171687     2.75   0.008     .0127118    .0817155
+   _Iyear_87 |  -.0285852    .013235    -2.16   0.036     -.055182   -.0019884
+   _Iyear_88 |   .0338853   .0129788     2.61   0.012     .0078034    .0599671
+   _Iyear_89 |   .0359722   .0131018     2.75   0.008     .0096432    .0623012
+   _Iyear_90 |   .1000896   .0151096     6.62   0.000     .0697257    .1304535
+   _Iyear_91 |   .0568415   .0141884     4.01   0.000     .0283289    .0853542
+   _Iyear_92 |   .0269322   .0175123     1.54   0.131      -.00826    .0621244
+   _Iyear_93 |   .0199233   .0122886     1.62   0.111    -.0047715    .0446181
+   _Iyear_94 |    -.00631   .0118121    -0.53   0.596    -.0300473    .0174274
+   _Iyear_95 |   -.001449   .0162295    -0.09   0.929    -.0340635    .0311655
+   _Iyear_96 |  -.0462282   .0138405    -3.34   0.002    -.0740417   -.0184147
+   _Iyear_97 |          0  (omitted)
+       _cons |   .0080173   .0108096     0.74   0.462    -.0137054      .02974
+------------------------------------------------------------------------------
+
+. xi: reg D.lpc_prop D.efaprop D.xx* i.year, cluster(statenum)
+i.year            _Iyear_85-97        (naturally coded; _Iyear_85 omitted)
+note: _Iyear_97 omitted because of collinearity.
+
+Linear regression                               Number of obs     =        600
+                                                F(20, 49)         =      38.82
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.2269
+                                                Root MSE          =     .04723
+
+                              (Std. err. adjusted for 50 clusters in statenum)
+------------------------------------------------------------------------------
+             |               Robust
+  D.lpc_prop | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+     efaprop |
+         D1. |  -.1056067   .0211387    -5.00   0.000    -.1480866   -.0631268
+             |
+    xxprison |
+         D1. |  -.0442129   .0399126    -1.11   0.273    -.1244203    .0359945
+             |
+    xxpolice |
+         D1. |   .0013468   .0289865     0.05   0.963    -.0569037    .0595974
+             |
+     xxunemp |
+         D1. |   .8088413    .286039     2.83   0.007     .2340244    1.383658
+             |
+    xxincome |
+         D1. |  -.0319107   .1487698    -0.21   0.831    -.3308748    .2670535
+             |
+     xxpover |
+         D1. |   .0005799   .0009897     0.59   0.561    -.0014091    .0025688
+             |
+    xxafdc15 |
+         D1. |   1.09e-07   2.68e-06     0.04   0.968    -5.27e-06    5.49e-06
+             |
+    xxgunlaw |
+         D1. |   .0079872   .0165145     0.48   0.631    -.0251999    .0411743
+             |
+      xxbeer |
+         D1. |   -.000094    .001634    -0.06   0.954    -.0033778    .0031897
+             |
+   _Iyear_86 |   .0493091   .0105104     4.69   0.000     .0281876    .0704306
+   _Iyear_87 |   .0367647   .0092482     3.98   0.000     .0181796    .0553497
+   _Iyear_88 |   .0203096   .0099623     2.04   0.047     .0002896    .0403296
+   _Iyear_89 |   .0318672    .009623     3.31   0.002     .0125291    .0512053
+   _Iyear_90 |   .0331433   .0087018     3.81   0.000     .0156563    .0506303
+   _Iyear_91 |   .0292757   .0080645     3.63   0.001     .0130696    .0454819
+   _Iyear_92 |  -.0180399   .0126121    -1.43   0.159    -.0433848    .0073049
+   _Iyear_93 |  -.0012664   .0094742    -0.13   0.894    -.0203056    .0177728
+   _Iyear_94 |   .0277149   .0093639     2.96   0.005     .0088974    .0465324
+   _Iyear_95 |   .0394526   .0115456     3.42   0.001      .016251    .0626543
+   _Iyear_96 |  -.0121907   .0100496    -1.21   0.231    -.0323862    .0080047
+   _Iyear_97 |          0  (omitted)
+       _cons |  -.0006986   .0076638    -0.09   0.928    -.0160995    .0147023
+------------------------------------------------------------------------------
+
+. xi: reg D.lpc_murd D.efamurd D.xx* i.year, cluster(statenum)
+i.year            _Iyear_85-97        (naturally coded; _Iyear_85 omitted)
+note: _Iyear_97 omitted because of collinearity.
+
+Linear regression                               Number of obs     =        600
+                                                F(20, 49)         =      12.12
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.0728
+                                                Root MSE          =     .25726
+
+                              (Std. err. adjusted for 50 clusters in statenum)
+------------------------------------------------------------------------------
+             |               Robust
+  D.lpc_murd | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+     efamurd |
+         D1. |  -.2179677   .0677003    -3.22   0.002    -.3540165    -.081919
+             |
+    xxprison |
+         D1. |   -.077292   .2199209    -0.35   0.727    -.5192396    .3646557
+             |
+    xxpolice |
+         D1. |   .2643187   .2179024     1.21   0.231    -.1735725      .70221
+             |
+     xxunemp |
+         D1. |  -1.710646   1.340697    -1.28   0.208    -4.404878    .9835851
+             |
+    xxincome |
+         D1. |   -1.91615   .9739057    -1.97   0.055    -3.873287    .0409867
+             |
+     xxpover |
+         D1. |  -.0019964   .0058539    -0.34   0.735    -.0137602    .0097675
+             |
+    xxafdc15 |
+         D1. |  -.0000313   .0000152    -2.06   0.045    -.0000617   -7.67e-07
+             |
+    xxgunlaw |
+         D1. |   .0111875   .0569375     0.20   0.845    -.1032328    .1256078
+             |
+      xxbeer |
+         D1. |   .0017476   .0048788     0.36   0.722    -.0080569     .011552
+             |
+   _Iyear_86 |   .1821951   .0666184     2.73   0.009     .0483203    .3160698
+   _Iyear_87 |   .0351502    .050687     0.69   0.491    -.0667092    .1370095
+   _Iyear_88 |   .0721048   .0531556     1.36   0.181    -.0347154    .1789251
+   _Iyear_89 |   .0951573   .0378657     2.51   0.015     .0190634    .1712512
+   _Iyear_90 |   .1191989   .0472964     2.52   0.015     .0241532    .2142446
+   _Iyear_91 |   .1058216   .0577676     1.83   0.073    -.0102667      .22191
+   _Iyear_92 |   .0936027   .0673664     1.39   0.171    -.0417752    .2289805
+   _Iyear_93 |   .1668759    .054281     3.07   0.003     .0577942    .2759575
+   _Iyear_94 |    .002041   .0477668     0.04   0.966    -.0939499     .098032
+   _Iyear_95 |   .1671159   .0940864     1.78   0.082    -.0219578    .3561896
+   _Iyear_96 |     .05687   .0734639     0.77   0.443    -.0907613    .2045013
+   _Iyear_97 |          0  (omitted)
+       _cons |  -.0620118   .0402821    -1.54   0.130    -.1429617    .0189381
+------------------------------------------------------------------------------
+
+. 
+end of do-file
+
+. do "<local-project-path>"
+
+. *******************************************************
+. * 4. Rescale some controls before LASSO
+. *******************************************************
+. 
+. replace xxincome = xxincome / 100
+(650 real changes made)
+
+. replace xxpover   = xxpover   / 100
+(650 real changes made)
+
+. replace xxafdc15  = xxafdc15  / 10000
+(650 real changes made)
+
+. replace xxbeer    = xxbeer    / 100
+(650 real changes made)
+
+. 
+. * Year dummies created by xi above.
+. local tdums "_Iyear_87 _Iyear_88 _Iyear_89 _Iyear_90 _Iyear_91 _Iyear_92 _Iyear_93 _Iyear_94 _Iyear_95 _Iyear_96
+>  _Iyear_97"
+
+. 
+. * Original control variables.
+. local xx "xxprison xxpolice xxunemp xxincome xxpover xxafdc15 xxgunlaw xxbeer"
+
+. 
+end of do-file
+
+. do "<local-project-path>"
+
+. *******************************************************
+. * 5. Build high-dimensional controls
+. *******************************************************
+. 
+. * First differences.
+. local Dxx
+
+. foreach x of local xx {
+  2.     gen D`x' = D.`x'
+  3.     local Dxx `Dxx' D`x'
+  4. }
+
+. 
+. * Squared first differences.
+. local Dxx2
+
+. foreach x of local Dxx {
+  2.     gen `x'2 = `x'^2
+  3.     local Dxx2 `Dxx2' `x'2
+  4. }
+
+. 
+. * Pairwise interactions among first differences.
+. local DxxInt
+
+. local nxx : word count `Dxx'
+
+. 
+. forvalues ii = 1/`nxx' {
+  2.     local start = `ii' + 1
+  3.     forvalues jj = `start'/`nxx' {
+  4.         local temp1 : word `ii' of `Dxx'
+  5.         local temp2 : word `jj' of `Dxx'
+  6.         gen `temp1'X`temp2' = `temp1' * `temp2'
+  7.         local DxxInt `DxxInt' `temp1'X`temp2'
+  8.     }
+  9. }
+
+. 
+. * Lags.
+. local Lxx
+
+. foreach x of local xx {
+  2.     gen L`x' = L.`x'
+  3.     local Lxx `Lxx' L`x'
+  4. }
+
+. 
+. * Squared lags.
+. local Lxx2
+
+. foreach x of local Lxx {
+  2.     gen `x'2 = `x'^2
+  3.     local Lxx2 `Lxx2' `x'2
+  4. }
+
+. 
+. * Within-state means.
+. local Mxx
+
+. foreach x of local xx {
+  2.     bysort statenum: egen M`x' = mean(`x')
+  3.     local Mxx `Mxx' M`x'
+  4. }
+
+. 
+. * Squared within-state means.
+. local Mxx2
+
+. foreach x of local Mxx {
+  2.     gen `x'2 = `x'^2
+  3.     local Mxx2 `Mxx2' `x'2
+  4. }
+
+. 
+. * Initial levels.
+. local xx0
+
+. foreach x of local xx {
+  2.     bysort statenum (year): gen `x'0 = `x'[1]
+  3.     local xx0 `xx0' `x'0
+  4. }
+
+. 
+. * Squared initial levels.
+. local xx02
+
+. foreach x of local xx0 {
+  2.     gen `x'2 = `x'^2
+  3.     local xx02 `xx02' `x'2
+  4. }
+
+. 
+. * Initial differences.
+. local Dxx0
+
+. foreach x of local Dxx {
+  2.     bysort statenum (year): gen `x'0 = `x'[2]
+  3.     local Dxx0 `Dxx0' `x'0
+  4. }
+
+. 
+. * Squared initial differences.
+. local Dxx02
+
+. foreach x of local Dxx0 {
+  2.     gen `x'2 = `x'^2
+  3.     local Dxx02 `Dxx02' `x'2
+  4. }
+
+. 
+end of do-file
+
+. * Combine all common controls.
+
+. 
+. local biglist `Dxx' `Dxx2' `DxxInt' `Lxx' `Lxx2' `Mxx' `Mxx2' `xx0' `xx02' `Dxx0' `Dxx02'
+
+. 
+. 
+. 
+. * Interactions with trend and trend squared.
+
+. 
+. local IntT
+
+. 
+. foreach x of local biglist {
+  2. 
+.     gen `x'Xt  = `x' * trend
+  3. 
+.     gen `x'Xt2 = `x' * (trend^2)
+  4. 
+.     local IntT `IntT' `x'Xt `x'Xt2
+  5. 
+. }
+
+. 
+. 
+. 
+. local shared `biglist' `IntT'
+
+. *******************************************************
+
+. 
+. * 6. Crime-specific controls
+
+. 
+. *******************************************************
+
+. 
+. 
+. 
+. * Violent crime-specific controls.
+
+. 
+. gen Dviol = D.efaviol
+(50 missing values generated)
+
+. 
+. bysort statenum (year): gen viol0  = efaviol[1]
+
+. 
+. bysort statenum (year): gen Dviol0 = Dviol[2]
+
+. 
+. 
+. 
+. gen viol02     = viol0^2
+
+. 
+. gen Dviol02    = Dviol0^2
+
+. 
+. gen viol0Xt    = viol0 * trend
+
+. 
+. gen viol0Xt2   = viol0 * (trend^2)
+
+. 
+. gen viol02Xt   = viol02 * trend
+
+. 
+. gen viol02Xt2  = viol02 * (trend^2)
+
+. 
+. gen Dviol0Xt   = Dviol0 * trend
+
+. 
+. gen Dviol0Xt2  = Dviol0 * (trend^2)
+
+. 
+. gen Dviol02Xt  = Dviol02 * trend
+
+. 
+. gen Dviol02Xt2 = Dviol02 * (trend^2)
+
+. 
+. 
+. 
+. local contviol "viol0 viol0Xt viol0Xt2 viol02 viol02Xt viol02Xt2 Dviol0 Dviol0Xt Dviol0Xt2 Dviol02 Dviol02Xt Dvi
+> ol02Xt2"
+
+. 
+. local AllViol `contviol' `shared'
+
+. 
+. 
+. 
+. * Property crime-specific controls.
+
+. 
+. gen Dprop = D.efaprop
+(50 missing values generated)
+
+. 
+. bysort statenum (year): gen prop0  = efaprop[1]
+
+. 
+. bysort statenum (year): gen Dprop0 = Dprop[2]
+
+. 
+. 
+. 
+. gen prop02     = prop0^2
+
+. 
+. gen Dprop02    = Dprop0^2
+
+. 
+. gen prop0Xt    = prop0 * trend
+
+. 
+. gen prop0Xt2   = prop0 * (trend^2)
+
+. 
+. gen prop02Xt   = prop02 * trend
+
+. 
+. gen prop02Xt2  = prop02 * (trend^2)
+
+. 
+. gen Dprop0Xt   = Dprop0 * trend
+
+. 
+. gen Dprop0Xt2  = Dprop0 * (trend^2)
+
+. 
+. gen Dprop02Xt  = Dprop02 * trend
+
+. 
+. gen Dprop02Xt2 = Dprop02 * (trend^2)
+
+. 
+. 
+. 
+. local contprop "prop0 prop0Xt prop0Xt2 prop02 prop02Xt prop02Xt2 Dprop0 Dprop0Xt Dprop0Xt2 Dprop02 Dprop02Xt Dpr
+> op02Xt2"
+
+. 
+. local AllProp `contprop' `shared'
+
+. 
+. 
+. 
+. * Murder-specific controls.
+
+. 
+. gen Dmurd = D.efamurd
+(50 missing values generated)
+
+. 
+. bysort statenum (year): gen murd0  = efamurd[1]
+
+. 
+. bysort statenum (year): gen Dmurd0 = Dmurd[2]
+
+. 
+. 
+. 
+. gen murd02     = murd0^2
+
+. 
+. gen Dmurd02    = Dmurd0^2
+
+. 
+. gen murd0Xt    = murd0 * trend
+
+. 
+. gen murd0Xt2   = murd0 * (trend^2)
+
+. 
+. gen murd02Xt   = murd02 * trend
+
+. 
+. gen murd02Xt2  = murd02 * (trend^2)
+
+. 
+. gen Dmurd0Xt   = Dmurd0 * trend
+
+. 
+. gen Dmurd0Xt2  = Dmurd0 * (trend^2)
+
+. 
+. gen Dmurd02Xt  = Dmurd02 * trend
+
+. 
+. gen Dmurd02Xt2 = Dmurd02 * (trend^2)
+
+. 
+. 
+. 
+. local contmurd "murd0 murd0Xt murd0Xt2 murd02 murd02Xt murd02Xt2 Dmurd0 Dmurd0Xt Dmurd0Xt2 Dmurd02 Dmurd02Xt Dmu
+> rd02Xt2"
+
+. 
+. local AllMurd `contmurd' `shared'
+
+. *******************************************************
+
+. 
+. * 7. Differenced outcomes
+
+. 
+. *******************************************************
+
+. 
+. 
+. 
+. gen Dyviol = D.lpc_viol
+(50 missing values generated)
+
+. 
+. gen Dyprop = D.lpc_prop
+(50 missing values generated)
+
+. 
+. gen Dymurd = D.lpc_murd
+(50 missing values generated)
+
+. 
+. 
+. 
+. * Drop first year because first differences and lags are missing.
+
+. 
+. drop if trend == 0
+(50 observations deleted)
+
+. *******************************************************
+
+. 
+. * 8. OLS with all high-dimensional controls
+
+. 
+. *******************************************************
+
+. 
+. 
+. 
+. reg Dyviol Dviol `AllViol' `tdums', cluster(statenum)
+
+Linear regression                               Number of obs     =        600
+                                                F(13, 49)         =     102.24
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.1254
+                                                Root MSE          =     .07757
+
+                              (Std. err. adjusted for 50 clusters in statenum)
+------------------------------------------------------------------------------
+             |               Robust
+      Dyviol | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+       Dviol |   -.312261    .075099    -4.16   0.000    -.4631782   -.1613438
+       viol0 |  -5.643416   5.843003    -0.97   0.339    -17.38537    6.098538
+     viol0Xt |   34.88361   25.08761     1.39   0.171    -15.53183    85.29904
+    viol0Xt2 |  -34.55861   21.43584    -1.61   0.113    -77.63554    8.518319
+      viol02 |   101.4458   118.8197     0.85   0.397    -137.3313    340.2229
+    viol02Xt |  -508.6894   511.6622    -0.99   0.325    -1536.913    519.5342
+   viol02Xt2 |   483.4643   437.0361     1.11   0.274    -394.7926    1361.721
+      Dviol0 |   7.230209   8.332748     0.87   0.390    -9.515075    23.97549
+    Dviol0Xt |  -40.00519   35.92639    -1.11   0.271     -112.202     32.1916
+   Dviol0Xt2 |   39.49748   30.74276     1.28   0.205     -22.2824    101.2774
+     Dviol02 |  -191.7769   233.3571    -0.82   0.415    -660.7256    277.1718
+   Dviol02Xt |   947.4301   1004.151     0.94   0.350    -1070.488    2965.348
+  Dviol02Xt2 |  -904.2333   856.6178    -1.06   0.296    -2625.671    817.2046
+       _cons |   .0342862   .0073382     4.67   0.000     .0195394    .0490329
+------------------------------------------------------------------------------
+
+. 
+. reg Dyprop Dprop `AllProp' `tdums', cluster(statenum)
+
+Linear regression                               Number of obs     =        600
+                                                F(13, 49)         =     198.04
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.1372
+                                                Root MSE          =     .04959
+
+                              (Std. err. adjusted for 50 clusters in statenum)
+------------------------------------------------------------------------------
+             |               Robust
+      Dyprop | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+       Dprop |  -.1566886   .0371747    -4.21   0.000    -.2313939   -.0819833
+       prop0 |   .3766821   .7409945     0.51   0.613    -1.112402    1.865766
+     prop0Xt |  -4.007186   3.754238    -1.07   0.291    -11.55161    3.537237
+    prop0Xt2 |   4.955313   3.593792     1.38   0.174    -2.266683    12.17731
+      prop02 |    1.38702   3.421922     0.41   0.687     -5.48959     8.26363
+    prop02Xt |   9.207689   17.60376     0.52   0.603    -26.16838    44.58376
+   prop02Xt2 |  -17.54199   16.95584    -1.03   0.306    -51.61603    16.53205
+      Dprop0 |  -.4923873   1.516141    -0.32   0.747    -3.539187    2.554413
+    Dprop0Xt |   8.205563   7.432728     1.10   0.275    -6.731063    23.14219
+   Dprop0Xt2 |  -10.58965   7.037786    -1.50   0.139    -24.73262    3.553307
+     Dprop02 |  -4.621814   12.14433    -0.38   0.705    -29.02676    19.78313
+   Dprop02Xt |  -35.50215    62.3243    -0.57   0.572    -160.7475    89.74322
+  Dprop02Xt2 |   64.89278   59.86381     1.08   0.284    -55.40804    185.1936
+       _cons |    .018488   .0036794     5.02   0.000     .0110941     .025882
+------------------------------------------------------------------------------
+
+. 
+. reg Dymurd Dmurd `AllMurd' `tdums', cluster(statenum)
+
+Linear regression                               Number of obs     =        600
+                                                F(13, 49)         =     123.29
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.0205
+                                                Root MSE          =     .26284
+
+                              (Std. err. adjusted for 50 clusters in statenum)
+------------------------------------------------------------------------------
+             |               Robust
+      Dymurd | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+       Dmurd |   -.264093   .1677569    -1.57   0.122    -.6012132    .0730272
+       murd0 |   2.228924   31.12953     0.07   0.943    -60.32822    64.78607
+     murd0Xt |    43.2242   120.2832     0.36   0.721     -198.494    284.9424
+    murd0Xt2 |  -76.84515   95.86008    -0.80   0.427    -269.4832    115.7929
+      murd02 |  -6288.002    8325.59    -0.76   0.454     -23018.9     10442.9
+    murd02Xt |    44165.8   31225.71     1.41   0.164    -18584.61    106916.2
+   murd02Xt2 |  -43581.43   23223.53    -1.88   0.067    -90250.85        3088
+      Dmurd0 |  -2.258017   20.70148    -0.11   0.914    -43.85919    39.34316
+    Dmurd0Xt |  -46.15665   80.76116    -0.57   0.570    -208.4523     116.139
+   Dmurd0Xt2 |   79.80095    66.0979     1.21   0.233    -53.02775    212.6296
+     Dmurd02 |   3979.498   5062.262     0.79   0.436    -6193.499    14152.49
+   Dmurd02Xt |  -27315.99   18994.73    -1.44   0.157    -65487.32    10855.35
+  Dmurd02Xt2 |   26709.35   14132.76     1.89   0.065    -1691.496     55110.2
+       _cons |    .010338   .0071343     1.45   0.154    -.0039988    .0246749
+------------------------------------------------------------------------------
+
+. *******************************************************
+
+. 
+. * 9. Post-double-selection LASSO
+
+. 
+. *******************************************************
+
+. 
+. 
+. 
+. * Violent crime: outcome selection.
+
+. 
+. lassoShooting Dyviol `AllViol', controls(`tdums') lasiter(100) verbose(0) fdisplay(0)
+
+. 
+. local yvSel `r(selected)'
+
+. 
+. display "Selected controls for violent-crime outcome equation:"
+Selected controls for violent-crime outcome equation:
+
+. 
+. display "`yvSel'"
+viol0Xt2
+
+. 
+. 
+. 
+. * Violent crime: treatment selection.
+
+. 
+. lassoShooting Dviol `AllViol', controls(`tdums') lasiter(100) verbose(0) fdisplay(0)
+
+. 
+. local xvSel `r(selected)'
+
+. 
+. display "Selected controls for violent-crime abortion equation:"
+Selected controls for violent-crime abortion equation:
+
+. 
+. display "`xvSel'"
+viol0 viol0Xt
+
+. 
+. 
+. 
+. * Union and final regression.
+
+. 
+. local vDS : list yvSel | xvSel
+
+. 
+. display "Union of selected violent-crime controls:"
+Union of selected violent-crime controls:
+
+. 
+. display "`vDS'"
+viol0Xt2 viol0 viol0Xt
+
+. 
+. 
+. 
+. reg Dyviol Dviol `vDS' `tdums', cluster(statenum)
+
+Linear regression                               Number of obs     =        600
+                                                F(4, 49)          =      48.41
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.1083
+                                                Root MSE          =     .07773
+
+                              (Std. err. adjusted for 50 clusters in statenum)
+------------------------------------------------------------------------------
+             |               Robust
+      Dyviol | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+       Dviol |   -.274121    .049012    -5.59   0.000    -.3726144   -.1756277
+    viol0Xt2 |  -2.585054   1.103994    -2.34   0.023    -4.803613   -.3664949
+       viol0 |   .1341089   .2091398     0.64   0.524    -.2861733     .554391
+     viol0Xt |   1.895857   1.200615     1.58   0.121    -.5168693    4.308584
+       _cons |   .0366841   .0054316     6.75   0.000     .0257688    .0475994
+------------------------------------------------------------------------------
+
+. 
+. 
+. 
+. 
+. 
+. * Property crime: outcome selection.
+
+. 
+. lassoShooting Dyprop `AllProp', controls(`tdums') lasiter(100) verbose(0) fdisplay(0)
+
+. 
+. local ypSel `r(selected)'
+
+. 
+. display "Selected controls for property-crime outcome equation:"
+Selected controls for property-crime outcome equation:
+
+. 
+. display "`ypSel'"
+prop0Xt
+
+. 
+. 
+. 
+. * Property crime: treatment selection.
+
+. 
+. lassoShooting Dprop `AllProp', controls(`tdums') lasiter(100) verbose(0) fdisplay(0)
+
+. 
+. local xpSel `r(selected)'
+
+. 
+. display "Selected controls for property-crime abortion equation:"
+Selected controls for property-crime abortion equation:
+
+. 
+. display "`xpSel'"
+prop0
+
+. 
+. 
+. 
+. * Union and final regression.
+
+. 
+. local pDS : list ypSel | xpSel
+
+. 
+. display "Union of selected property-crime controls:"
+Union of selected property-crime controls:
+
+. 
+. display "`pDS'"
+prop0Xt prop0
+
+. 
+. 
+. 
+. reg Dyprop Dprop `pDS' `tdums', cluster(statenum)
+
+Linear regression                               Number of obs     =        600
+                                                F(3, 49)          =      52.37
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.1265
+                                                Root MSE          =     .04948
+
+                              (Std. err. adjusted for 50 clusters in statenum)
+------------------------------------------------------------------------------
+             |               Robust
+      Dyprop | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+       Dprop |  -.1451659   .0276788    -5.24   0.000    -.2007885   -.0895434
+     prop0Xt |  -.3055603   .0338337    -9.03   0.000    -.3735517   -.2375688
+       prop0 |   .1761868   .0277557     6.35   0.000     .1204096    .2319641
+       _cons |   .0193507   .0032685     5.92   0.000     .0127824     .025919
+------------------------------------------------------------------------------
+
+. 
+. 
+. 
+. 
+. 
+. * Murder: outcome selection.
+
+. 
+. lassoShooting Dymurd `AllMurd', controls(`tdums') lasiter(100) verbose(0) fdisplay(0)
+
+. 
+. local ymSel `r(selected)'
+
+. 
+. display "Selected controls for murder outcome equation:"
+Selected controls for murder outcome equation:
+
+. 
+. display "`ymSel'"
+murd02Xt2
+
+. 
+. 
+. 
+. * Murder: treatment selection.
+
+. 
+. lassoShooting Dmurd `AllMurd', controls(`tdums') lasiter(100) verbose(0) fdisplay(0)
+
+. 
+. local xmSel `r(selected)'
+
+. 
+. display "Selected controls for murder abortion equation:"
+Selected controls for murder abortion equation:
+
+. 
+. display "`xmSel'"
+murd0Xt
+
+. 
+. 
+. 
+. * Union and final regression.
+
+. 
+. local mDS : list ymSel | xmSel
+
+. 
+. display "Union of selected murder controls:"
+Union of selected murder controls:
+
+. 
+. display "`mDS'"
+murd02Xt2 murd0Xt
+
+. 
+. 
+. 
+. reg Dymurd Dmurd `mDS' `tdums', cluster(statenum)
+
+Linear regression                               Number of obs     =        600
+                                                F(3, 49)          =      83.55
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.0131
+                                                Root MSE          =      .2616
+
+                              (Std. err. adjusted for 50 clusters in statenum)
+------------------------------------------------------------------------------
+             |               Robust
+      Dymurd | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+       Dmurd |  -.4338729   .0764358    -5.68   0.000    -.5874764   -.2802693
+   murd02Xt2 |  -278.9441   48.10888    -5.80   0.000    -375.6225   -182.2657
+     murd0Xt |   9.029439   2.357921     3.83   0.000     4.291019    13.76786
+       _cons |   .0163458   .0055661     2.94   0.005     .0051604    .0275313
+------------------------------------------------------------------------------
+
+. *******************************************************
+
+. 
+. * 10. Close log
+
+. 
+. *******************************************************
+
+. 
+. 
+. 
+. log close
+      name:  <unnamed>
+       log:  <local-log-path>
+  log type:  text
+ closed on:  17 May 2026, 04:35:24
+------------------------------------------------------------------------------------------------------------------
