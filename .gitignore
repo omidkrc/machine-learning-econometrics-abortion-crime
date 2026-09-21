@@ -1,0 +1,10 @@
+# Generated Stata logs
+results/replication.log
+*.smcl
+
+# Stata temporary/graph files
+*.gph
+
+# OS metadata
+.DS_Store
+Thumbs.db
