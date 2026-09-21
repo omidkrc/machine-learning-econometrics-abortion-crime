@@ -15,7 +15,7 @@ The emphasis is methodological: variable selection for causal inference is diffe
 - **Author:** Omid Karami
 - **Date:** May 2026
 
-The submitted report is preserved in [`report/course_report.pdf`](report/course_report.pdf).
+A GitHub-readable adaptation of the submitted course report is available in [`report/course_report.md`](report/course_report.md).
 
 ## Empirical Design
 
@@ -67,13 +67,12 @@ machine-learning-econometrics-abortion-crime/
 ├── docs/
 │   └── run_instructions.md
 ├── report/
-│   └── course_report.pdf
+│   └── course_report.md
 ├── results/
 │   ├── key_results.md
 │   └── course_run.log
 └── source/
     ├── LevittExample.do
-    ├── JEPAbortion.txt
     └── README_original.txt
 ```
 
@@ -93,7 +92,7 @@ See [`docs/run_instructions.md`](docs/run_instructions.md) for details.
 
 ## Provenance and Licensing
 
-The dataset, original replication script, original replication log/readme, and `lassoShooting.ado` come from the replication materials for Belloni, Chernozhukov, and Hansen (2014). The supplied license states that code/software are covered by a Modified BSD license and databases/text by Creative Commons Attribution 4.0, with copyright attributed to the American Economic Association (2014). See [`LICENSE_REPLICATION_MATERIALS.txt`](LICENSE_REPLICATION_MATERIALS.txt) and [`ATTRIBUTION.md`](ATTRIBUTION.md).
+The dataset, original replication script/readme, and `lassoShooting.ado` come from the replication materials for Belloni, Chernozhukov, and Hansen (2014). The supplied license states that code/software are covered by a Modified BSD license and databases/text by Creative Commons Attribution 4.0, with copyright attributed to the American Economic Association (2014). See [`LICENSE_REPLICATION_MATERIALS.txt`](LICENSE_REPLICATION_MATERIALS.txt) and [`ATTRIBUTION.md`](ATTRIBUTION.md).
 
 The course report and repository-specific documentation are presented as Omid Karami's course work and are not intended to alter the licensing terms of the upstream replication materials.
 
